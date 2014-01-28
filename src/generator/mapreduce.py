@@ -1,12 +1,10 @@
 from . import AbstractCodeGenerator
 from abc import ABCMeta
-from avro.schema import PrimitiveSchema
-from string import Template
 
 import inflection
-import string
 import os
 import pystache
+import string
 
 class JavaHadoopCodeGenerator(AbstractCodeGenerator):
     __metaclass__ = ABCMeta
@@ -69,18 +67,6 @@ class JavaHadoopCodeGenerator(AbstractCodeGenerator):
             PARSER_TEMPLATE     : 'Boolean.parseBoolean({0})'
         }
     }
-
-    def get_equivalence(self, field, value):
-        if not type(field.type) is PrimitiveSchema:
-            raise Exception('Only primitive schemas are implemented')
-
-        if not field.type.type in self.equivalence:
-            raise Exception('Map for {0} was not found' % field.type.type)
-
-        if not value in self.equivalence[field.type.type]:
-            raise Exception('{0} equivalence was not found' % value)
-
-        return self.equivalence[field.type.type][value]
 
     def import_maker(self, library, schema = None):
         auxLibrary = set(library)
